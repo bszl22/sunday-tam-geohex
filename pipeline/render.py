@@ -214,8 +214,13 @@ PAGE_CSS = """
     position: relative; display: grid; width: 100%; height: 560px;
     border-radius: 6px; overflow: hidden; margin-bottom: 16px;
   }
-  .map-stack .map-layer { grid-area: 1 / 1; width: 100%; height: 100%; }
-  .map-stack .map-layer.is-inactive { visibility: hidden; pointer-events: none; }
+  /* z-index is explicit, not left to implicit DOM-order stacking: with 6
+     iframes sharing one grid cell, Safari has been observed painting an
+     is-inactive layer (visibility:hidden, but still an iframe/compositing
+     layer) on top of the active one even though the DOM/JS state underneath
+     is correct — an explicit position + z-index removes that ambiguity. */
+  .map-stack .map-layer { grid-area: 1 / 1; position: relative; width: 100%; height: 100%; z-index: 1; }
+  .map-stack .map-layer.is-inactive { visibility: hidden; pointer-events: none; z-index: 0; }
   .map-layer iframe { width: 100%; height: 100%; border: none !important; }
 
   .territory-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 8px; vertical-align: middle; }
