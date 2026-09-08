@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "places-server": {
+      "command": "/Users/bryansoo/Documents/sunday-tam-geohex/.venv/bin/python3",
+      "args": ["-m", "mcp_server.server"]
+    }
+  }
+}
